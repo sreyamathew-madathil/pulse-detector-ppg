@@ -1,6 +1,8 @@
 # Pulse Detector — Real-Time Heart Rate from a Webcam (PPG)
 
-A Python application that measures your heart rate in real time using nothing but a standard webcam — no extra hardware required. It works by detecting the same tiny light-absorption changes in your skin that smartwatches and hospital pulse oximeters use, a technique called **photoplethysmography (PPG)**.
+A Python application that measures heart rate (pulse, in BPM) in real time using nothing but a standard webcam — no extra hardware required. It works by detecting the same tiny light-absorption changes in your skin that smartwatches and hospital pulse oximeters use, a technique called **photoplethysmography (PPG)**. It measures heart rate only — not blood pressure, which requires a pressure-sensing cuff and cannot be derived from camera-based color changes.
+
+Includes two modes: a **live**, continuously-updating view, and a **measure** mode that gives a single, clean final reading after a fixed measurement period — useful when you want one clear number to validate rather than a moving live value.
 
 ## How It Works
 
@@ -36,15 +38,23 @@ Every heartbeat pushes a pulse of blood through the capillaries in your fingerti
    ```
    pip install opencv-python numpy scipy matplotlib
    ```
-3. Run the live detector:
+3. Choose one of two modes:
+
+   **Live mode** — continuously updating BPM, good for a live demo:
    ```
    python pulse_extract.py
    ```
-4. When prompted, place your fingertip fully over the green box on screen and hold still. After a few seconds, your live BPM reading will appear on the video feed. Press `q` to quit.
+   Place your fingertip fully over the green box and hold still. It briefly reads "Calculating..." while the rolling data window fills, then shows a smoothed, continuously updating BPM. Press `q` to quit.
+
+   **Measure mode** — a fixed warm-up + measurement period ending in one clean, final reading, closer to how a clinical pulse oximeter presents a result:
+   ```
+   python pulse_measure.py
+   ```
+   Follow the on-screen countdown (5s warm-up, 15s measurement), hold your finger steady throughout, and the final BPM is displayed on screen and printed to the terminal.
 
 ## Validation
 
-Estimated BPM was cross-checked against a manual pulse count (radial artery, 15-second count × 4) and matched within 1 BPM (72 manual vs. 71.9 detected) under steady, well-lit conditions.
+Estimated BPM was cross-checked against a manual pulse count (radial artery, 15-second count × 4) and matched within 1 BPM (72 manual vs. 71.9 detected) under steady, well-lit conditions. Measure mode's fixed warm-up + single-window calculation was added specifically to produce a more stable, directly comparable reading for this kind of validation, rather than relying on a continuously-changing live number.
 
 ## Known Limitations
 
