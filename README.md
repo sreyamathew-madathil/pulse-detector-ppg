@@ -17,7 +17,7 @@ Every heartbeat pushes a pulse of blood through the capillaries in your fingerti
 
 ## Demo
 
-*(Add a screenshot or short GIF of the live BPM reading here — this is the first thing people will look at.)*
+![Pulse Detector Demo](demo.gif)
 
 ## Tech Stack
 
